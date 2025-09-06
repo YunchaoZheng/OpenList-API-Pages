@@ -4,19 +4,21 @@
 
 用于OpenList获取部分网盘API的接口和页面
 
-部署地址：[OpenList Token 获取工具](https://api.oplist.org/)
+部署地址：[OpenList Token 获取工具 - 全球站点](https://api.oplist.org/)
+部署地址：[OpenList Token 获取工具 - 中国大陆](https://api.oplist.org.cn/)
 
 ## 部署方法
 
 ### 一键部署
 
-#### EdgeOne Functions 全球站
-[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?project-name=oplist-api&repository-url=https://github.com/OpenListTeam/OpenList-APIPages&build-command=npm%20run%20build-eo&install-command=npm%20install&output-directory=public&root-directory=./&env=MAIN_URLS,onedrive_uid,onedrive_key,alicloud_uid,alicloud_key,baiduyun_uid,baiduyun_key,baiduyun_ext,cloud115_uid,cloud115_key,googleui_uid,googleui_key,yandexui_uid,yandexui_key,dropboxs_uid,dropboxs_key,quarkpan_uid,quarkpan_key)
+#### EdgeOne Functions 国际站
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?project-name=oplist-api&repository-url=https://github.com/OpenListTeam/OpenList-APIPages&build-command=npm%20run%20build-eo&install-command=npm%20install&output-directory=public&root-directory=./&env=MAIN_URLS)
 
 部署完成后，请登录[EdgeOne Functions后台](https://console.tencentcloud.com/edgeone/pages)，修改环境变量，请参考[变量说明](#变量说明)部分
 
+
 #### EdgeOne Functions 中国站
-[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?project-name=oplist-api&repository-url=https://github.com/OpenListTeam/OpenList-APIPages&build-command=npm%20run%20build-eo&install-command=npm%20install&output-directory=public&root-directory=./&env=MAIN_URLS,onedrive_uid,onedrive_key,alicloud_uid,alicloud_key,baiduyun_uid,baiduyun_key,baiduyun_ext,cloud115_uid,cloud115_key,googleui_uid,googleui_key,yandexui_uid,yandexui_key,dropboxs_uid,dropboxs_key,quarkpan_uid,quarkpan_key)
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?project-name=oplist-api&repository-url=https://github.com/OpenListTeam/OpenList-APIPages&build-command=npm%20run%20build-eo&install-command=npm%20install&output-directory=public&root-directory=./&env=MAIN_URLS)
 
 部署完成后，请登录[EdgeOne Functions后台](https://console.cloud.tencent.com/edgeone/pages)，修改环境变量，请参考[变量说明](#变量说明)部分
 
@@ -41,6 +43,7 @@ docker pull ghcr.io/openlistteam/openlist_api_server:latest
 docker run -d --name oplist-api-server \
   -p 3000:3000 \
   -e OPLIST_MAIN_URLS="api.example.com" \
+  -e OPLIST_PROXY_API="gts.example.com" \
   -e OPLIST_ONEDRIVE_UID= `#optional` \
   -e OPLIST_ONEDRIVE_KEY= `#optional` \
   -e OPLIST_ALICLOUD_UID= `#optional` \
@@ -71,6 +74,7 @@ docker run -d --name oplist-api-server \
 | 变量名称       | 必要 | 变量类型 | 变量说明                     |
 | -------------- | ---- | -------- |--------------------------|
 | `OPLIST_MAIN_URLS`    | 是   | string   | 绑定主域名，示例：api.example.com |
+| `OPLIST_PROXY_API`    | 否   | string   | 部署在大陆的节点需要指定代理谷歌  |
 | `OPLIST_ONEDRIVE_UID` | 否   | string   | OneDrive 客户端ID           |
 | `OPLIST_ONEDRIVE_KEY` | 否   | string   | OneDrive 客户端密钥           |
 | `OPLIST_ALICLOUD_UID` | 否   | string   | 阿里云盘开发者AppID             |
@@ -81,7 +85,7 @@ docker run -d --name oplist-api-server \
 | `OPLIST_CLOUD115_UID` | 否   | string   | 115网盘应用ID                |
 | `OPLIST_CLOUD115_KEY` | 否   | string   | 115网盘应用密钥                |
 | `OPLIST_GOOGLEUI_UID` | 否   | string   | 谷歌客户端ID                  |
-| `OPLIST_GOOGLEUI_KEY` | 否   | string   | 谷歌全局API Key              |
+| `OPLIST_GOOGLEUI_KEY` | 否   | string   | 谷歌客户端秘钥              |
 | `OPLIST_YANDEXUI_UID` | 否   | string   | Yandex应用ID               |
 | `OPLIST_YANDEXUI_KEY` | 否   | string   | Yandex应用密钥               |
 | `OPLIST_DROPBOXS_UID` | 否   | string   | Dropboxx应用ID             |
@@ -112,6 +116,7 @@ cp wrangler.example.jsonc wrangler.encrypt.jsonc
 ```
   "vars": {
     "MAIN_URLS": "api.example.com",
+    "PROXY_API": "gts.example.com",
     "onedrive_uid": "*****************************",
     "onedrive_key": "*****************************",
     "alicloud_uid": "*****************************",
@@ -134,9 +139,10 @@ cp wrangler.example.jsonc wrangler.encrypt.jsonc
 
 ### 变量说明
 
-| 变量名称       | 必要 | 变量类型 | 变量说明                     |
-| -------------- | ---- | -------- |--------------------------|
+| 变量名称       | 必要 | 变量类型 | 变量说明              |
+| -------------- | ---- | -------- |-------------------|
 | `MAIN_URLS`    | 是   | string   | 绑定主域名，示例：api.example.com |
+| `PROXY_API`    | 否   | string   | 部署在大陆的节点需要指定代理谷歌  |
 | `onedrive_uid` | 否   | string   | OneDrive 客户端ID           |
 | `onedrive_key` | 否   | string   | OneDrive 客户端密钥           |
 | `alicloud_uid` | 否   | string   | 阿里云盘开发者AppID             |
@@ -147,7 +153,7 @@ cp wrangler.example.jsonc wrangler.encrypt.jsonc
 | `cloud115_uid` | 否   | string   | 115网盘应用ID                |
 | `cloud115_key` | 否   | string   | 115网盘应用密钥                |
 | `googleui_uid` | 否   | string   | 谷歌客户端ID                  |
-| `googleui_key` | 否   | string   | 谷歌全局API Key              |
+| `googleui_key` | 否   | string   | 谷歌客户端秘钥              |
 | `yandexui_uid` | 否   | string   | Yandex应用ID               |
 | `yandexui_key` | 否   | string   | Yandex应用密钥               |
 | `dropboxs_uid` | 否   | string   | Dropboxx应用ID             |
