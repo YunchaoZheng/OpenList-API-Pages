@@ -303,3 +303,4 @@ npm build-js && npm deploy-js
 ## 项目赞助
 本项目的中国站点边缘函数、CDN加速及安全防护由[Tencent EdgeOne](https://edgeone.ai/zh?from=github)赞助
 <img src="https://edgeone.ai/media/34fe3a45-492d-4ea4-ae5d-ea1087ca7b4b.png" style="width: 500px" />
+
